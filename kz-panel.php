@@ -34,7 +34,7 @@ if(isset($_POST['flag'])) {
 	$adr=$_POST['adr'];
 	$IP=$_POST['IP'];
 	$flag_sql='INSERT INTO `flags` (`ime`,`tel`,`email`,`adr`,`IP`,`flag`,`info`) VALUES ("'.$ime.'","'.$tel.'","'.$email.'","'.$adr.'","'.$IP.'","'.$flag.'","0")';
-	mysql_query($flag_sql) or die (mysql_error());
+	mysqli_query($mysqli,$sql)or die(mysqli_error().' - '.$sql);;
 	}
 else $flag=0;
 if(isset($_POST['sort'])) $sort=$_POST['sort'];
@@ -55,7 +55,7 @@ if ($sitepos==0) {
 		<div style="text-align:center;width:430px"><h3>Dobrodošli na kontrolni panel Kluba Zdravlja</h3></div>
 		<div style="text-align:center;width:430px">Da bi ste nastavili dalje, unesite vašu lozinku</div><br/>
 		<form name="sif" method="POST" action="kz-panel.php">
-			<div style="text-align:center;width:430px"><input type="text" style="width:150px;font-size:20;font-weight:bold;color:#003366;text-align:center" name="sifra" /></div>
+			<div style="text-align:center;width:430px"><input type="text" style="width:150px;font-size:20pt;font-weight:bold;color:#003366;text-align:center" name="sifra" /></div>
 			<input type="hidden" name="bio" value="1"/>
 			<div style="text-align:center;width:430px"><input type="submit" value="unesi" style="margin-top:10px"/></div>
 		</form>
@@ -69,7 +69,7 @@ if ($sitepos==1) {
 	<div id="header">
 		<div style="padding:20px;font-size:28px;font-weight:bold;text-shadow: #555555 2px 2px 2px;">Kontrolni panel Kluba Zdravlja
 		</div>
-		<div style="float:right;color:#FFFFFF;font-size:20;font-weight:bold;text-shadow: #555555 2px 2px 2px;margin:20px 20px 0 0">Današnja lozinka: "<?php echo $pas; ?>"</div>
+		<div style="float:right;color:#FFFFFF;font-size:20pt;font-weight:bold;text-shadow: #555555 2px 2px 2px;margin:20px 20px 0 0">Današnja lozinka: "<?php echo $pas; ?>"</div>
 	</div>
 	<div id="toolbar">
 		<div style="margin-left:190px">
@@ -82,21 +82,56 @@ if ($sitepos==1) {
 <?php
 	if ($page==1) {
 	
-		echo '<div style="height:26px;padding:3px;background:#59bce9"><span style="float:left;padding-left:7px;color:#FFFFFF;text-shadow: #555555 2px 2px 2px;font-size:18;font-weight:bold">Dešavanja</span>';
-		echo '<form method="POST" style="float:left;margin-left:10px"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="1"/><input type="hidden" name="sort" value="1"/><input type="hidden" name="arhiva" value="0"/><input type="submit" value="Najnovija" /></form>';
-		echo '<form method="POST" style="float:left;margin-left:5px"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="1"/><input type="hidden" name="sort" value="1"/><input type="hidden" name="arhiva" value="1"/><input type="submit" value="Arhiva" /></form>';
-		echo '<form method="POST" style="float:right"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="1"/><input type="hidden" name="sort" value="3"/><input type="hidden" name="arhiva" value="1"/><input type="submit" value="Sortiraj po IP adresi" /></form>';
-		echo '<form method="POST" style="float:right;margin-right:5px"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="1"/><input type="hidden" name="sort" value="2"/><input type="hidden" name="arhiva" value="1"/><input type="submit" value="Sortiraj po imenu i prezimenu" /></form>';
-		echo '</div>';
+		echo '<div style="height:26px;padding:3px;background:#59bce9">
+				<div style="float:left;padding-left:7px;color:#FFFFFF;text-shadow: #555555 2px 2px 2px;font-size:18pt;font-weight:bold">Dešavanja</div>
+				<form method="POST" style="float:left;margin-left:10px">
+					<input type="hidden" name="stps" value="1"/>
+					<input type="hidden" name="page" value="1"/>
+					<input type="hidden" name="sort" value="1"/>
+					<input type="hidden" name="arhiva" value="0"/>
+					<input type="submit" value="Najnovija" />
+				</form>
+				<form method="POST" style="float:left;margin-left:5px">
+					<input type="hidden" name="stps" value="1"/>
+					<input type="hidden" name="page" value="1"/>
+					<input type="hidden" name="sort" value="1"/>
+					<input type="hidden" name="arhiva" value="1"/>
+					<input type="submit" value="Arhiva" />
+				</form>
+				<form method="POST" style="float:right">
+					<input type="hidden" name="stps" value="1"/>
+					<input type="hidden" name="page" value="1"/>
+					<input type="hidden" name="sort" value="3"/>
+					<input type="hidden" name="arhiva" value="1"/
+					<input type="submit" value="Sortiraj po IP adresi" />
+				</form>
+					<form method="POST" style="float:right;margin-right:5px">
+					<input type="hidden" name="stps" value="1"/>
+					<input type="hidden" name="page" value="1"/>
+					<input type="hidden" name="sort" value="2"/>
+					<input type="hidden" name="arhiva" value="1"/>
+					<input type="submit" value="Sortiraj po imenu i prezimenu" />
+				</form>
+			</div>
+			<div style="height:26px;padding:3px;background:#59bce9">
+				<div style="float:left;padding-left:7px;color:#FFFFFF;text-shadow: #555555 2px 2px 2px;font-size:14pt;font-weight:bold">
+				<span style="margin-left:10px">ID</span>
+				<span style="margin-left:60px">datum</span>
+				<span style="margin-left:98px">lične informacije</span>
+				<span style="margin-left:100px">IP</span>
+				<span style="margin-left:165px">strana</span>
+				<span style="margin-left:100px">greška</span>
+				</div>
+			</div>';
 		
 		$sql='SELECT * FROM `log` ORDER BY ';
 		if ($sort==1) $sql.='`timestamp` DESC';
 		elseif ($sort==2) $sql.='`ime` ASC, `timestamp` DESC';
 		elseif ($sort==3) $sql.='`IP` ASC, `timestamp` DESC';
 		if ($arhiva==0) $sql.=' LIMIT 100';
-		$result = mysql_query($sql)or die(mysql_error());
+		$result = mysqli_query($mysqli,$sql)or die(mysqli_error($mysqli).' - '.$sql);
 		$count=1;
-		while($row = mysql_fetch_assoc($result)){
+		while($row = $result->fetch_assoc()){
 			$ID=$row['ID'];
 			$IP=$row['IP'];
 			$ime=$row['ime'];
@@ -136,8 +171,8 @@ $fdate = date ('d.m.Y. H:i:s', mktime ($hour,$min,$sec,$month,$day,$year));
 
 			if ($count%2==1) $bgnd='DDDDDD';
 				else $bgnd='FFFFFF';
-				echo '<div style="height:20px;margin:0 6px;padding:3px;width:914px;background:#'.$bgnd.'">';
-					echo '<div style="width:50px;float:left">'.$ID.'</div>';
+				echo '<div style="height:20px;margin:0 6px;padding:3px;width:914px;background:#'.$bgnd.';font-size:11pt">';
+					echo '<div style="width:30px;float:left">'.$ID.'</div>';
 					echo '<div style="width:175px;float:left"> &nbsp;&nbsp;|&nbsp;&nbsp; '.$fdate.'</div>';
 					echo '<div style="width:225px;float:left" class="ToolText" onMouseOver="javascript:this.className=\'ToolTextHover\'" onMouseOut="javascript:this.className=\'ToolText\'"> &nbsp;&nbsp;|&nbsp;&nbsp; '.$ime.'<span>tel: '.$tel.' &nbsp;&nbsp;|&nbsp;&nbsp; e-mail: '.$email.' &nbsp;&nbsp;|&nbsp;&nbsp; adresa: '.$adr.' </span></div>';
 					echo '<div style="width:147px;float:left"> &nbsp;&nbsp;|&nbsp;&nbsp; '.$IP.'</div>';
@@ -156,7 +191,7 @@ $fdate = date ('d.m.Y. H:i:s', mktime ($hour,$min,$sec,$month,$day,$year));
 	if ($page==3) {
 
 	
-		echo '<div style="height:26px;padding:3px;background:#59bce9"><span style="float:left;padding-left:7px;color:#FFFFFF;text-shadow: #555555 2px 2px 2px;font-size:18;font-weight:bold">Zastavice</span>';
+		echo '<div style="height:26px;padding:3px;background:#59bce9"><span style="float:left;padding-left:7px;color:#FFFFFF;text-shadow: #555555 2px 2px 2px;font-size:18pt;font-weight:bold">Zastavice</span>';
 		echo '<form method="POST" style="float:left;margin-left:10px"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="3"/><input type="hidden" name="sort" value="1"/><input type="hidden" name="arhiva" value="0"/><input type="submit" value="Najnovije" /></form>';
 		echo '<form method="POST" style="float:left;margin-left:5px"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="3"/><input type="hidden" name="sort" value="1"/><input type="hidden" name="arhiva" value="1"/><input type="submit" value="Arhiva" /></form>';
 		echo '<form method="POST" style="float:right"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="3"/><input type="hidden" name="sort" value="4"/><input type="hidden" name="arhiva" value="1"/><input type="submit" value="Sortiraj po zastavici" /></form>';
@@ -170,9 +205,9 @@ $fdate = date ('d.m.Y. H:i:s', mktime ($hour,$min,$sec,$month,$day,$year));
 		elseif ($sort==3) $sql.='`IP` ASC, `timestamp` DESC';
 		elseif ($sort==4) $sql.='`flag` ASC, `timestamp` DESC';
 		if ($arhiva==0) $sql.=' LIMIT 100';
-		$result = mysql_query($sql)or die(mysql_error());
+		$result = mysqli_query($mysqli,$sql)or die(mysqli_error().' - '.$sql);
 		$count=1;
-		while($row = mysql_fetch_assoc($result)){
+		while($row = $result->fetch_assoc()){
 			$ID=$row['ID'];
 			$IP=$row['IP'];
 			$ime=$row['ime'];

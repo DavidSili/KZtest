@@ -1,8 +1,4 @@
-<?php
-mysql_connect("localhost", "root", "") or die(mysql_error());
-mysql_select_db("kz") or die(mysql_error());
-mysql_query('set names utf8');
-?>
+<?php include 'connect.php'; ?>
 <html>
 <head profile="http://www.w3.org/2005/20/profile">
 <link rel="icon"
@@ -92,12 +88,12 @@ else $adr="";
 $flagy=0;
 $flagz=0;
 $sql ='SELECT flag FROM flags WHERE `ime`="'.$ime.'" ORDER BY `timestamp` DESC LIMIT 1';
-$result = mysql_query($sql)or die(mysql_error());
-$row = mysql_fetch_assoc($result);
+$result = mysqli_query($mysqli,$sql)or die(mysqli_error().' - '.$sql);
+$row = $result->fetch_assoc();
 $flagy=$row['flag'];
 $sql ='SELECT flag FROM flags WHERE `IP`="'.$ip.'" ORDER BY `timestamp` DESC LIMIT 1';
-$result = mysql_query($sql)or die(mysql_error());
-$row = mysql_fetch_assoc($result);
+$result = mysqli_query($mysqli,$sql)or die(mysqli_error().' - '.$sql);
+$row = $result->fetch_assoc();
 $flagz=$row['flag'];
 if ($flagy==1 OR $flagy==3 OR $flagz==1) $sitepos=-1;
 
@@ -124,7 +120,7 @@ if ($sitepos==0 AND $bio==0) {
 		<div style="text-align:center;width:430px"><h3>Dobrodošli na test za instruktora zdravlja</h3></div>
 		<div style="text-align:center;width:430px">Da bi ste nastavili dalje, unesite lozinku koju ste dobili za pristup testu</div><br/>
 		<form name="sif" method="POST" action="kz.php">
-			<div style="text-align:center;width:430px"><input type="text" style="width:150px;font-size:20;font-weight:bold;color:#003366;text-align:center" name="sifra" /></div>
+			<div style="text-align:center;width:430px"><input type="text" style="width:150px;font-size:20pt;font-weight:bold;color:#003366;text-align:center" name="sifra" /></div>
 			<input type="hidden" name="bio" value="1"/>
 			<input type="hidden" name="stps" value="1"/>
 			<div style="text-align:center;width:430px"><input type="submit" value="unesi" style="margin-top:10px"/></div>
@@ -139,7 +135,7 @@ if ($sitepos==0 AND $bio>0) {
 		<div style="text-align:center;width:430px"><h3>Dobrodošli na test za instruktora zdravlja</h3></div>
 		<div style="text-align:center;width:430px"><?php if ($preostalo!=0) echo 'Pogrešno ste uneli lozinku, molimo vas ponovo je unesite'; ?></div><br/>
 		<form name="sif" method="POST" action="kz.php">
-			<div style="text-align:center;width:430px"><input type="text" style="width:150px;font-size:20;font-weight:bold;color:#003366;text-align:center" name="sifra" <?php if ($preostalo==0) echo 'disabled="disabled"' ?>/></div>
+			<div style="text-align:center;width:430px"><input type="text" style="width:150px;font-size:20pt;font-weight:bold;color:#003366;text-align:center" name="sifra" <?php if ($preostalo==0) echo 'disabled="disabled"' ?>/></div>
 			<input type="hidden" name="bio" value="<?php echo $bio+1; ?>"/>
 			<input type="hidden" name="stps" value="1"/>
 			<div style="text-align:center;width:430px"><input type="submit" value="unesi" style="margin-top:10px"/></div>
@@ -166,9 +162,9 @@ if ($sitepos==1) {
 					adresa<br/>
 				</div>
 				<div style="float:left;width:250px;height:110px">
-					<input type="text" name="ime" title="obavezno polje"/><br/>
-					<input type="text" name="tel" value="<?php echo $tel ?>" /><br/>
-					<input type="text" name="email" value="<?php echo $email ?>" /><br/>
+					<input type="text" name="ime" title="obavezno polje" style="margin-bottom:6px"/><br/>
+					<input type="text" name="tel" style="margin-bottom:6px" value="<?php echo $tel ?>" /><br/>
+					<input type="text" name="email" style="margin-bottom:6px" value="<?php echo $email ?>" /><br/>
 					<input type="text" name="adr" value="<?php echo $adr ?>" /><br/>
 				</div>
 			</div>
@@ -270,7 +266,7 @@ if ($procenat==0.8 AND $greska==3) {
 	echo '</form>';
 }
 
-	echo '<div id="timer" style="float:right;color:#FFFFFF;font-size:16;font-weight:bold;margin:10px">Procenat tačnih odgovora je: '.$procenat*'100'.'%';
+	echo '<div id="timer" style="float:right;color:#FFFFFF;font-size:16pt;font-weight:bold;margin:10px">Procenat tačnih odgovora je: '.$procenat*'100'.'%';
 			if ($procenat<0.8 AND $greska==1) echo ' a potrebno je 45 pitanja za prolaz. Možete da ponovite test još dva puta';
 			if ($procenat<0.8 AND $greska==2) echo ' a potrebno je 45 pitanja za prolaz. Možete da ponovite test još jednom';
 			if ($procenat<0.8 AND $greska==3) echo ' - Žao nam je ali na sva tri testa niste prošli.';
@@ -304,13 +300,13 @@ array_push($araya,array($ID,$pitanje,$odgovor,$odgovora,$tacnih,$res,array()));
 		$ocount=0;
 				
 		if ($odgovora!=0) {
-			echo '<div style="font-weight:bold;font-size:16;color:#000000;padding:10px 5px 5px 5px">';
+			echo '<div style="font-weight:bold;font-size:16pt;color:#000000;padding:10px 5px 5px 5px">';
 			if (${'tac'.$i}==1) echo '<span style="color:#0000FF">'.$i.'. </span>';
 				else echo '<span style="color:#FF0000">'.$i.'. </span>';
 			echo $pitanje.'</div>';
 			}
 			else {
-				echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16">';
+				echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16pt">';
 				if (${'tac'.$i}==1) echo '<span style="color:#0000FF">'.$i.'. </span>';
 					else echo '<span style="color:#FF0000">'.$i.'. </span>';
 				$pit=explode("$#$",$pitanje);
@@ -468,7 +464,7 @@ $flag=1;
 if ($greska==4) $info=3;
 	else $info=2;
 $flag_sql='INSERT INTO `flags` (`ime`,`tel`,`email`,`adr`,`IP`,`flag`,`info`) VALUES ("'.$ime.'","'.$tel.'","'.$email.'","'.$adr.'","'.$ip.'","'.$flag.'","'.$info.'")';
-mysql_query($flag_sql) or die (mysql_error());
+mysqli_query($mysqli,$flag_sql) or die (mysqli_error($mysqli).' - '.$flag_sql);
 ?>
 <script language="javascript" type="text/javascript">
 alert('Žao nam je ali na sva tri testa niste prošli. Molimo vas kontaktirajte koordinatora testa za dalje informacije.');
@@ -485,7 +481,7 @@ alert('Pošto ste blizu granice, imate poslednju priliku da uradite još 5 dodat
 			if ($procenat>=0.9) {
 $flag=3;
 $flag_sql='INSERT INTO `flags` (`ime`,`tel`,`email`,`adr`,`IP`,`flag`,`info`) VALUES ("'.$ime.'","'.$tel.'","'.$email.'","'.$adr.'","'.$ip.'","'.$flag.'","'.$greska.'")';
-mysql_query($flag_sql) or die (mysql_error());
+mysqli_query($mysqli,$flag_sql) or die (mysqli_error($mysqli).' - '.$flag_sql);
 ?>
 <script language="javascript" type="text/javascript">
 alert('Čestitamo vam, prošli ste test. Molimo vas kontaktirajte koordinatora testa za dalje informacije.');
@@ -494,17 +490,17 @@ alert('Čestitamo vam, prošli ste test. Molimo vas kontaktirajte koordinatora t
 			}
 $arayb=serialize($araya);
 $sql="INSERT INTO `testlog` (`IP`,`arayb`,`ime`,`tel`,`email`,`adr`,`greska`) VALUES ('".$ip."','".$arayb."','".$ime."','".$tel."','".$email."','".$adr."','".$greska."')";
-mysql_query($sql) or die (mysql_error());
+mysqli_query($mysqli,$sql) or die (mysqli_error($mysqli).' - '.$sql);
 
 }
 $status_sql='INSERT INTO `log` (`IP`,`stps`,`ime`,`tel`,`email`,`adr`,`greska`) VALUES ("'.$ip.'","'.$sitepos.'","'.$ime.'","'.$tel.'","'.$email.'","'.$adr.'","'.$greska.'")';
-mysql_query($status_sql) or die (mysql_error());
+mysqli_query($mysqli,$status_sql) or die (mysqli_error($mysqli).' - '.$status_sql);
 
 if ($sitepos==2) {
 ?>
 <div id="header">
-	<?php if ($greska!=0) echo '<span style="float:left;margin:10px;color:#FFFFFF;font-size:20;font-weight:bold">Ukupno grešaka:'.$greska.'</span>'; ?>
-	<div id="timer" style="float:right;color:#FFFFFF;font-size:20;font-weight:bold;margin:10px">
+	<?php if ($greska!=0) echo '<span style="float:left;margin:10px;color:#FFFFFF;font-size:20pt;font-weight:bold">Ukupno grešaka:'.$greska.'</span>'; ?>
+	<div id="timer" style="float:right;color:#FFFFFF;font-size:20pt;font-weight:bold;margin:10px">
 		<script type="text/javascript">
 			window.onload = CreateTimer("timer", 2700);
 		</script>
@@ -515,8 +511,8 @@ if ($sitepos==2) {
 $counter_a=1;
 echo '<form name="test" method="POST" action="kz.php">';
 	$sql ='SELECT * FROM pitanja ORDER BY RAND() LIMIT 5';
-	$result = mysql_query($sql)or die(mysql_error());
-	while($row = mysql_fetch_assoc($result)){
+	$result = mysqli_query($mysqli,$sql)or die(mysqli_error().' - '.$sql);
+	while($row = $result->fetch_assoc()){
 		$ID=$row['ID'];
 		$pitanje=$row['pitanje'];
 		$odgovor=$row['odgovor'];
@@ -526,9 +522,9 @@ echo '<form name="test" method="POST" action="kz.php">';
 		$odgovori=explode(" $##$ ",$odgovor);
 		echo '<div>';
 
-			if ($odgovora!=0) echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16">'.$counter_a.'. '.$pitanje.'</div>';
+			if ($odgovora!=0) echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16pt">'.$counter_a.'. '.$pitanje.'</div>';
 				else {
-					echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16">'.$counter_a.'. ';
+					echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16pt">'.$counter_a.'. ';
 					$pit=explode("$#$",$pitanje);
 					$i=1;
 					if ($pit[0]!="") echo $pit[0];
@@ -607,8 +603,8 @@ setTimeout('document.test.submit()',2700000);
 if ($sitepos==3) {
 ?>
 <div id="header">
-	<span style="float:left;margin:10px;color:#FFFFFF;font-size:20;font-weight:bold">Poslednja šansa</span>
-	<div id="timer" style="float:right;color:#FFFFFF;font-size:20;font-weight:bold;margin:10px">
+	<span style="float:left;margin:10px;color:#FFFFFF;font-size:20pt;font-weight:bold">Poslednja šansa</span>
+	<div id="timer" style="float:right;color:#FFFFFF;font-size:20pt;font-weight:bold;margin:10px">
 		<script type="text/javascript">
 			window.onload = CreateTimer("timer", 270);
 		</script>
@@ -619,8 +615,8 @@ if ($sitepos==3) {
 $counter_a=1;
 echo '<form name="test" method="POST" action="kz.php">';
 	$sql ='SELECT * FROM pitanja ORDER BY RAND() LIMIT 5';
-	$result = mysql_query($sql)or die(mysql_error());
-	while($row = mysql_fetch_assoc($result)){
+	$result = mysqli_query($mysqli,$sql)or die(mysqli_error($mysqli).' - '.$sql);
+	while($row = $result->fetch_assoc()){
 		$ID=$row['ID'];
 		$pitanje=$row['pitanje'];
 		$odgovor=$row['odgovor'];
@@ -630,9 +626,9 @@ echo '<form name="test" method="POST" action="kz.php">';
 		$odgovori=explode(" $##$ ",$odgovor);
 		echo '<div>';
 
-		if ($odgovora!=0) echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16">'.$counter_a.'. '.$pitanje.'</div>';
+		if ($odgovora!=0) echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16pt">'.$counter_a.'. '.$pitanje.'</div>';
 				else {
-					echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16">'.$counter_a.'. ';
+					echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16pt">'.$counter_a.'. ';
 					$pit=explode("$#$",$pitanje);
 					$i=1;
 					if ($pit[0]!="") echo $pit[0];
