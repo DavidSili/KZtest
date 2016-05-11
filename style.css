@@ -1,0 +1,19 @@
+body {
+	font-family:arial;
+}
+#wrapper {
+	
+}
+#toolbar {
+	height:100%;
+	width:130px;
+	background:#5588CC;
+	float:left;
+}
+#header {
+	height:45px;
+	width:100%;
+	background:#003366;
+	float:left;
+	margin-bottom:5px;
+}

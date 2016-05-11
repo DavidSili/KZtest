@@ -1,0 +1,66 @@
+body {
+	background:#F1F1F1 url(images/bgnd-r.gif) repeat-x left top;
+	margin:0;
+	font-family:arial;
+}
+form {
+	margin-bottom:0;
+}
+#wrapper {
+	width:932px;
+	background:#FFFFFF url(images/main.gif) repeat-y center top;
+	margin:0 auto;
+}
+#header {
+	background: url(images/header.gif) no-repeat left top;
+	width:100%;
+	height:125px;
+	color:#FFFFFF;
+}
+#toolbar {
+	background: url(images/menu.gif) repeat-x left top;
+	width:100%;
+	height:26px;
+	text-align:center;
+	color:#FFFFFF;
+	padding:5px 0;
+	font-size:18;
+	font-weight:bold;
+}
+#uubar {
+	background:#FFFFFF url(images/uubar.gif) no-repeat left top;
+	height:14px;
+}
+#ulbar {
+	background:#FFFFFF url(images/ulbar.gif) no-repeat left top;
+	height:16px;
+}
+#ubar {
+	background:#FFFFFF url(images/ubar-r.gif) repeat-y left top;
+	color:#FFFFFF;
+	padding:0 13px 0 13px;
+}
+#lbar {
+	background:#FFFFFF url(images/lbar-r.gif) repeat-y left top;
+	color:#FFFFFF;
+}
+#llbar {
+	background:#FFFFFF url(images/llbar.gif) no-repeat left top;
+	height:15px;
+}
+
+.ToolText{position:relative; } 
+.ToolTextHover{position:relative;} 
+.ToolText span{display: none;} 
+
+.ToolTextHover span{
+  width:400px;
+  display:block; 
+  position:absolute; 
+  border:1px solid black; 
+  top:22px; 
+  left:5px; 
+  background-color:gray; color:white;
+  padding-left:3px;
+  z-index:2;
+} 
