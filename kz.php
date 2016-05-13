@@ -64,7 +64,6 @@ $y=date('Y',time());
 $pos1=($y*$d-($d^$m)+$d)%1337;
 $pos2=(($y*$d-($d^$m)+$d)*$m)%1337;
 $pas=substr($seed,$pos1,4).substr($seed,$pos2,4);
-echo $pas;
 
 if(isset($_POST['stps'])) $sitepos=$_POST['stps'];
 else $sitepos=0;
@@ -106,9 +105,8 @@ if ($sitepos==-1) {
 }
 
 
-if($sitepos==2 AND $ime=="") $sitepos=1;
+if ($sitepos==2 AND $ime=="") $sitepos=1;
 if ($sitepos==1 AND $bio>0 AND $bio<6 AND ($sfr!=$pas)) $sitepos=0;
-
 if ($sitepos==1) $greska=0;
 if ($sitepos==0) $greska=$bio;
 		
@@ -253,7 +251,7 @@ if ($procenat<0.9 AND $greska<3) {
 		echo '<input type="submit" value="Ponovi test" style="float:left;margin:10px 0 10px 20px;width:200px">';
 	echo '</form>';
 }
-if ($procenat==0.8 AND $greska==3) {
+if ($procenat>=0.8 AND $procenat <0.9 AND $greska==3) {
 	echo '<form method="POST" action="kz.php" style="float:left;width:100px">';
 		echo '<input type="hidden" name="stps" value="3" />';
 		echo '<input type="hidden" name="greska" value="'.$greska.'" />';
@@ -270,7 +268,7 @@ if ($procenat==0.8 AND $greska==3) {
 			if ($procenat<0.8 AND $greska==1) echo ' a potrebno je 45 pitanja za prolaz. Možete da ponovite test još dva puta';
 			if ($procenat<0.8 AND $greska==2) echo ' a potrebno je 45 pitanja za prolaz. Možete da ponovite test još jednom';
 			if ($procenat<0.8 AND $greska==3) echo ' - Žao nam je ali na sva tri testa niste prošli.';
-			if ($procenat==0.8 AND $greska==3) echo ' Imate poslednju šansu.';
+			if ($procenat>=0.8 AND $procenat <0.9 AND $greska==3) echo ' Imate poslednju šansu.';
 			if ($procenat>=0.9) echo ' Čestitamo vam, prošli ste test.';
 
 ?>
@@ -304,27 +302,25 @@ array_push($araya,array($ID,$pitanje,$odgovor,$odgovora,$tacnih,$res,array()));
 			if (${'tac'.$i}==1) echo '<span style="color:#0000FF">'.$i.'. </span>';
 				else echo '<span style="color:#FF0000">'.$i.'. </span>';
 			echo $pitanje.'</div>';
+		}
+		else {
+			echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16pt">';
+			if (${'tac'.$i}==1) echo '<span style="color:#0000FF">'.$i.'. </span>';
+				else echo '<span style="color:#FF0000">'.$i.'. </span>';
+			$pit=explode("$#$",$pitanje);
+			$ii=1;
+			if ($pit[0]!="") echo $pit[0];
+			while ($ii<=$tacnih) {
+				$xii=$ii-1;
+				if ($_POST['o'.$i.'-'.$ii]==$resenje[$xii]) echo '<span style="color:#0000FF">'.$_POST['o'.$i.'-'.$ii].'</span>';
+					else {
+					echo '<span style="color:#FF0000;text-decoration:line-through">'.$_POST['o'.$i.'-'.$ii].'</span> <span style="color:#009900">'.$resenje[$xii].'</span>';
+					}
+				echo $pit[$ii];
+				$ii++;
 			}
-			else {
-				echo '<div style="font-weight:bold;padding:10px 5px 5px 5px;color:#000000;font-size:16pt">';
-				if (${'tac'.$i}==1) echo '<span style="color:#0000FF">'.$i.'. </span>';
-					else echo '<span style="color:#FF0000">'.$i.'. </span>';
-				$pit=explode("$#$",$pitanje);
-				$ii=1;
-				if ($pit[0]!="") echo $pit[0];
-				while ($ii<=$tacnih) {
-					$xii=$ii-1;
-					if ($_POST['o'.$i.'-'.$ii]==$resenje[$xii]) echo '<span style="color:#0000FF">'.$_POST['o'.$i.'-'.$ii].'</span>';
-						else {
-						echo '<span style="color:#FF0000;text-decoration:line-through">'.$_POST['o'.$i.'-'.$ii].'</span> <span style="color:#009900">'.$resenje[$xii].'</span>';
-						}
-					echo $pit[$ii];
-					$ii++;
-				}
-				echo '</div>';
-				
-			}
-
+			echo '</div>';
+		}
 		if ($odgovora>1) {
 		
 			if ($tacnih==1) {
@@ -471,7 +467,7 @@ alert('Žao nam je ali na sva tri testa niste prošli. Molimo vas kontaktirajte 
 </script>
 <?php
 			}
-			if ($procenat==0.8 AND $greska==3) {
+			if ($procenat>=0.8 AND $procenat<0.9 AND $greska==3) {
 ?>
 <script language="javascript" type="text/javascript">
 alert('Pošto ste blizu granice, imate poslednju priliku da uradite još 5 dodatnih pitanja (sva trebaju da budu tačna).');

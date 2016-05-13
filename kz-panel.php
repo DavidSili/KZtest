@@ -115,8 +115,8 @@ if ($sitepos==1) {
 			</div>
 			<div style="height:26px;padding:3px;background:#59bce9">
 				<div style="float:left;padding-left:7px;color:#FFFFFF;text-shadow: #555555 2px 2px 2px;font-size:14pt;font-weight:bold">
-				<span style="margin-left:10px">ID</span>
-				<span style="margin-left:60px">datum</span>
+				<span style="margin-left:8px">ID</span>
+				<span style="margin-left:62px">datum</span>
 				<span style="margin-left:98px">lične informacije</span>
 				<span style="margin-left:100px">IP</span>
 				<span style="margin-left:165px">strana</span>
@@ -191,12 +191,43 @@ $fdate = date ('d.m.Y. H:i:s', mktime ($hour,$min,$sec,$month,$day,$year));
 	if ($page==3) {
 
 	
-		echo '<div style="height:26px;padding:3px;background:#59bce9"><span style="float:left;padding-left:7px;color:#FFFFFF;text-shadow: #555555 2px 2px 2px;font-size:18pt;font-weight:bold">Zastavice</span>';
-		echo '<form method="POST" style="float:left;margin-left:10px"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="3"/><input type="hidden" name="sort" value="1"/><input type="hidden" name="arhiva" value="0"/><input type="submit" value="Najnovije" /></form>';
-		echo '<form method="POST" style="float:left;margin-left:5px"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="3"/><input type="hidden" name="sort" value="1"/><input type="hidden" name="arhiva" value="1"/><input type="submit" value="Arhiva" /></form>';
-		echo '<form method="POST" style="float:right"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="3"/><input type="hidden" name="sort" value="4"/><input type="hidden" name="arhiva" value="1"/><input type="submit" value="Sortiraj po zastavici" /></form>';
-		echo '<form method="POST" style="float:right"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="3"/><input type="hidden" name="sort" value="3"/><input type="hidden" name="arhiva" value="1"/><input type="submit" value="Sortiraj po IP adresi" /></form>';
-		echo '<form method="POST" style="float:right;margin-right:5px"><input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="3"/><input type="hidden" name="sort" value="2"/><input type="hidden" name="arhiva" value="1"/><input type="submit" value="Sortiraj po imenu i prezimenu" /></form>';
+		echo '<div style="height:26px;padding:3px;background:#59bce9">
+				<span style="float:left;padding-left:7px;color:#FFFFFF;text-shadow: #555555 2px 2px 2px;font-size:18pt;font-weight:bold">Zastavice</span>
+				<form method="POST" style="float:left;margin-left:10px">
+					<input type="hidden" name="stps" value="1"/>
+					<input type="hidden" name="page" value="3"/>
+					<input type="hidden" name="sort" value="1"/>
+					<input type="hidden" name="arhiva" value="0"/>
+					<input type="submit" value="Najnovije" />
+				</form>
+				<form method="POST" style="float:left;margin-left:5px">
+					<input type="hidden" name="stps" value="1"/>
+					<input type="hidden" name="page" value="3"/>
+					<input type="hidden" name="sort" value="1"/>
+					<input type="hidden" name="arhiva" value="1"/>
+					<input type="submit" value="Arhiva" />
+				</form>
+				<form method="POST" style="float:right">
+					<input type="hidden" name="stps" value="1"/>
+					<input type="hidden" name="page" value="3"/>
+					<input type="hidden" name="sort" value="4"/>
+					<input type="hidden" name="arhiva" value="1"/>
+					<input type="submit" value="Sortiraj po zastavici" />
+				</form>
+				<form method="POST" style="float:right">
+					<input type="hidden" name="stps" value="1"/>
+					<input type="hidden" name="page" value="3"/>
+					<input type="hidden" name="sort" value="3"/>
+					<input type="hidden" name="arhiva" value="1"/>
+					<input type="submit" value="Sortiraj po IP adresi" />
+				</form>
+				<form method="POST" style="float:right;margin-right:5px">
+					<input type="hidden" name="stps" value="1"/>
+					<input type="hidden" name="page" value="3"/>
+					<input type="hidden" name="sort" value="2"/>
+					<input type="hidden" name="arhiva" value="1"/>
+					<input type="submit" value="Sortiraj po imenu i prezimenu" />
+				</form>';
 		echo '</div>';
 		
 		$sql='SELECT * FROM `flags` ORDER BY ';
@@ -278,25 +309,44 @@ else $infox='Dozvoljeno od administratora';
 					echo '<div style="width:147px;float:left"> &nbsp;&nbsp;|&nbsp;&nbsp; '.$IP.'</div>';
 					echo '<div style="width:300px;float:left"> &nbsp;&nbsp;|&nbsp;&nbsp; '.$infox.'</div>';
 					if ($flag==1) {
-					echo '<div style="width:50px;float:left"> &nbsp;|&nbsp; <form method="POST" style="float:right">';
-					echo '<input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="3"/><input type="hidden" name="sort" value="1"/><input type="hidden" name="arhiva" value="0"/><input type="hidden" name="flag" value="2"/><input type="hidden" name="ime" value="'.$ime.'"/><input type="hidden" name="tel" value="'.$tel.'"/><input type="hidden" name="adr" value="'.$adr.'"/><input type="hidden" name="email" value="'.$email.'"/><input type="hidden" name="IP" value="'.$IP.'"/>';
-					echo '<input type="submit" value="√" style="float:left;height:20px"/></form></div>';
+					echo '<div style="width:50px;float:left"> &nbsp;|&nbsp;
+						<form method="POST" style="float:right">
+							<input type="hidden" name="stps" value="1"/>
+							<input type="hidden" name="page" value="3"/>
+							<input type="hidden" name="sort" value="1"/>
+							<input type="hidden" name="arhiva" value="0"/>
+							<input type="hidden" name="flag" value="2"/>
+							<input type="hidden" name="ime" value="'.$ime.'"/>
+							<input type="hidden" name="tel" value="'.$tel.'"/>
+							<input type="hidden" name="adr" value="'.$adr.'"/>
+							<input type="hidden" name="email" value="'.$email.'"/>
+							<input type="hidden" name="IP" value="'.$IP.'"/>
+							<input type="submit" value="√" style="float:left;height:20px"/>
+						</form>
+					</div>';
 					}
 					else {
-					echo '<div style="width:50px;float:left"> &nbsp;|&nbsp; <form method="POST" style="float:right">';
-					echo '<input type="hidden" name="stps" value="1"/><input type="hidden" name="page" value="3"/><input type="hidden" name="sort" value="1"/><input type="hidden" name="arhiva" value="0"/><input type="hidden" name="flag" value="1"/><input type="hidden" name="ime" value="'.$ime.'"/><input type="hidden" name="tel" value="'.$tel.'"/><input type="hidden" name="adr" value="'.$adr.'"/><input type="hidden" name="email" value="'.$email.'"/><input type="hidden" name="IP" value="'.$IP.'"/>';
-					echo '<input type="submit" value="X" style="float:left;height:20px"/></form></div>';
+					echo '<div style="width:50px;float:left"> &nbsp;|&nbsp;
+						<form method="POST" style="float:right">
+							<input type="hidden" name="stps" value="1"/>
+							<input type="hidden" name="page" value="3"/>
+							<input type="hidden" name="sort" value="1"/>
+							<input type="hidden" name="arhiva" value="0"/>
+							<input type="hidden" name="flag" value="1"/>
+							<input type="hidden" name="ime" value="'.$ime.'"/>
+							<input type="hidden" name="tel" value="'.$tel.'"/>
+							<input type="hidden" name="adr" value="'.$adr.'"/>
+							<input type="hidden" name="email" value="'.$email.'"/>
+							<input type="hidden" name="IP" value="'.$IP.'"/>
+							<input type="submit" value="X" style="float:left;height:20px"/>
+						</form>
+					</div>';
 					}
 				echo '</div>';
-				
 			$count++;
 		}
-	
-
 	}
-?>
-</div>
-<?php
+echo '</div>';
 }
 ?>
 </body>
