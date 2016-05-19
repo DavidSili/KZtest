@@ -65,33 +65,33 @@ $pos1=($y*$d-($d^$m)+$d)%1337;
 $pos2=(($y*$d-($d^$m)+$d)*$m)%1337;
 $pas=substr($seed,$pos1,4).substr($seed,$pos2,4);
 
-if(isset($_POST['stps'])) $sitepos=$_POST['stps'];
+if(isset($_POST['stps'])) $sitepos=mysqli_real_escape_string($mysqli,$_POST['stps']);
 else $sitepos=0;
-if(isset($_POST['greska'])) $greska=$_POST['greska'];
+if(isset($_POST['greska'])) $greska=mysqli_real_escape_string($mysqli,$_POST['greska']);
 else $greska=0;
-if(isset($_POST['sifra'])) $sfr=$_POST['sifra'];
+if(isset($_POST['sifra'])) $sfr=mysqli_real_escape_string($mysqli,$_POST['sifra']);
 else $sfr=0;
-if(isset($_POST['bio'])) $bio=$_POST['bio'];
+if(isset($_POST['bio'])) $bio=mysqli_real_escape_string($mysqli,$_POST['bio']);
 else $bio=0;
-if(isset($_POST['grace'])) $grace=$_POST['grace'];
+if(isset($_POST['grace'])) $grace=mysqli_real_escape_string($mysqli,$_POST['grace']);
 else $grace=0;
-if(isset($_POST['ime'])) $ime=$_POST['ime'];
+if(isset($_POST['ime'])) $ime=mysqli_real_escape_string($mysqli,$_POST['ime']);
 else $ime="";
-if(isset($_POST['tel'])) $tel=$_POST['tel'];
+if(isset($_POST['tel'])) $tel=mysqli_real_escape_string($mysqli,$_POST['tel']);
 else $tel="";
-if(isset($_POST['email'])) $email=$_POST['email'];
+if(isset($_POST['email'])) $email=mysqli_real_escape_string($mysqli,$_POST['email']);
 else $email="";
-if(isset($_POST['adr'])) $adr=$_POST['adr'];
+if(isset($_POST['adr'])) $adr=mysqli_real_escape_string($mysqli,$_POST['adr']);
 else $adr="";
 
 $flagy=0;
 $flagz=0;
 $sql ='SELECT flag FROM flags WHERE `ime`="'.$ime.'" ORDER BY `timestamp` DESC LIMIT 1';
-$result = mysqli_query($mysqli,$sql)or die(mysqli_error().' - '.$sql);
+$result = mysqli_query($mysqli,$sql)or die;
 $row = $result->fetch_assoc();
 $flagy=$row['flag'];
 $sql ='SELECT flag FROM flags WHERE `IP`="'.$ip.'" ORDER BY `timestamp` DESC LIMIT 1';
-$result = mysqli_query($mysqli,$sql)or die(mysqli_error().' - '.$sql);
+$result = mysqli_query($mysqli,$sql)or die;
 $row = $result->fetch_assoc();
 $flagz=$row['flag'];
 if ($flagy==1 OR $flagy==3 OR $flagz==1) $sitepos=-1;
@@ -180,27 +180,28 @@ if ($sitepos==4) {
 	$counterok=0;
 	for ($i = 1; $i <= 5; $i++) {
 
-		$ID=$_POST['ID'.$i];
-		$odgovor=$_POST['odgovor'.$i];
-		$odgovora=$_POST['odgovora'.$i];
-		$tacnih=$_POST['tacnih'.$i];
-		$resenje=$_POST['resenje'.$i];
+		$ID=mysqli_real_escape_string($mysqli,$_POST['ID'.$i]);
+		$odgovor=mysqli_real_escape_string($mysqli,$_POST['odgovor'.$i]);
+		$odgovora=mysqli_real_escape_string($mysqli,$_POST['odgovora'.$i]);
+		$tacnih=mysqli_real_escape_string($mysqli,$_POST['tacnih'.$i]);
+		$resenje=mysqli_real_escape_string($mysqli,$_POST['resenje'.$i]);
 		$res=$resenje;
-		$redosled=unserialize($_POST['redosled'.$i]);
+		${'redosled'.$i}=mysqli_real_escape_string($mysqli,$_POST['redosled'.$i]);
+		$redosled=unserialize(${'redosled'.$i});
 		$odgovori=explode(" $##$ ",$odgovor);
 		$resenje=explode(",",$resenje);
 		
-		if ($odgovora==1) $odg=$_POST['o'.$i];
+		if ($odgovora==1) $odg=mysqli_real_escape_string($mysqli,$_POST['o'.$i]);
 		elseif ($odgovora>1) {
 			if ($tacnih==1) {
-				if (isset($_POST['o'.$i])) $odg=$_POST['o'.$i];
+				if (isset($_POST['o'.$i])) $odg=mysqli_real_escape_string($mysqli,$_POST['o'.$i]);
 					else $odg=0;
 			}
 			if ($tacnih>1) {
 				$odg="";
 				sort($redosled);
 				foreach ($redosled as $ii) {
-					if (isset($_POST['o'.$i.'-'.$ii])) $xodg=$_POST['o'.$i.'-'.$ii];
+					if (isset($_POST['o'.$i.'-'.$ii])) $xodg=mysqli_real_escape_string($mysqli,$_POST['o'.$i.'-'.$ii]);
 						else $xodg=0;
 					if ($xodg==1) {
 					$odg.=$ii.',';
@@ -213,7 +214,7 @@ if ($sitepos==4) {
 		elseif ($odgovora==0) {
 			$odg="";
 			for ($ii=1;$ii<=$tacnih;$ii++) {
-				if (isset($_POST['o'.$i.'-'.$ii])) $xodg=$_POST['o'.$i.'-'.$ii];
+				if (isset($_POST['o'.$i.'-'.$ii])) $xodg=mysqli_real_escape_string($mysqli,$_POST['o'.$i.'-'.$ii]);
 					else $xodg="";
 				$odg.=$xodg.',';
 			}
@@ -326,7 +327,7 @@ array_push($araya,array($ID,$pitanje,$odgovor,$odgovora,$tacnih,$res,array()));
 			if ($tacnih==1) {
 			
 				if (isset($_POST['o'.$i])) {
-					$odg=$_POST['o'.$i];
+					$odg=mysqli_real_escape_string($mysqli,$_POST['o'.$i]);
 					array_push($araya[$oi][6],$odg);
 					}
 					else $odg=0;
@@ -371,7 +372,7 @@ array_push($araya,array($ID,$pitanje,$odgovor,$odgovora,$tacnih,$res,array()));
 				$countx=0;
 				foreach ($redosled as $ii) {
 					if (isset($_POST['o'.$i.'-'.$ii])) {
-						$xodg=$_POST['o'.$i.'-'.$ii];
+						$xodg=mysqli_real_escape_string($mysqli,$_POST['o'.$i.'-'.$ii]);
 							array_push($araya[$oi][6],$redosled[$countx]);
 						}
 						else $xodg=0;
@@ -433,7 +434,7 @@ array_push($araya,array($ID,$pitanje,$odgovor,$odgovora,$tacnih,$res,array()));
 		elseif ($odgovora==1) {
 		
 			if (isset($_POST['o'.$i])) {
-				$odg=$_POST['o'.$i];
+				$odg=mysqli_real_escape_string($mysqli,$_POST['o'.$i]);
 					array_push($araya[$oi][6],$odg);
 				}
 				else $odg=0;
@@ -460,7 +461,7 @@ $flag=1;
 if ($greska==4) $info=3;
 	else $info=2;
 $flag_sql='INSERT INTO `flags` (`ime`,`tel`,`email`,`adr`,`IP`,`flag`,`info`) VALUES ("'.$ime.'","'.$tel.'","'.$email.'","'.$adr.'","'.$ip.'","'.$flag.'","'.$info.'")';
-mysqli_query($mysqli,$flag_sql) or die (mysqli_error($mysqli).' - '.$flag_sql);
+mysqli_query($mysqli,$flag_sql) or die;
 ?>
 <script language="javascript" type="text/javascript">
 alert('Žao nam je ali na sva tri testa niste prošli. Molimo vas kontaktirajte koordinatora testa za dalje informacije.');
@@ -477,7 +478,7 @@ alert('Pošto ste blizu granice, imate poslednju priliku da uradite još 5 dodat
 			if ($procenat>=0.9) {
 $flag=3;
 $flag_sql='INSERT INTO `flags` (`ime`,`tel`,`email`,`adr`,`IP`,`flag`,`info`) VALUES ("'.$ime.'","'.$tel.'","'.$email.'","'.$adr.'","'.$ip.'","'.$flag.'","'.$greska.'")';
-mysqli_query($mysqli,$flag_sql) or die (mysqli_error($mysqli).' - '.$flag_sql);
+mysqli_query($mysqli,$flag_sql) or die;
 ?>
 <script language="javascript" type="text/javascript">
 alert('Čestitamo vam, prošli ste test. Molimo vas kontaktirajte koordinatora testa za dalje informacije.');
@@ -486,11 +487,11 @@ alert('Čestitamo vam, prošli ste test. Molimo vas kontaktirajte koordinatora t
 			}
 $arayb=serialize($araya);
 $sql="INSERT INTO `testlog` (`IP`,`arayb`,`ime`,`tel`,`email`,`adr`,`greska`) VALUES ('".$ip."','".$arayb."','".$ime."','".$tel."','".$email."','".$adr."','".$greska."')";
-mysqli_query($mysqli,$sql) or die (mysqli_error($mysqli).' - '.$sql);
+mysqli_query($mysqli,$sql) or die;
 
 }
 $status_sql='INSERT INTO `log` (`IP`,`stps`,`ime`,`tel`,`email`,`adr`,`greska`) VALUES ("'.$ip.'","'.$sitepos.'","'.$ime.'","'.$tel.'","'.$email.'","'.$adr.'","'.$greska.'")';
-mysqli_query($mysqli,$status_sql) or die (mysqli_error($mysqli).' - '.$status_sql);
+mysqli_query($mysqli,$status_sql) or die;
 
 if ($sitepos==2) {
 ?>
@@ -507,7 +508,7 @@ if ($sitepos==2) {
 $counter_a=1;
 echo '<form name="test" method="POST" action="kz.php">';
 	$sql ='SELECT * FROM pitanja ORDER BY RAND() LIMIT 5';
-	$result = mysqli_query($mysqli,$sql)or die(mysqli_error().' - '.$sql);
+	$result = mysqli_query($mysqli,$sql)or die;
 	while($row = $result->fetch_assoc()){
 		$ID=$row['ID'];
 		$pitanje=$row['pitanje'];
@@ -611,7 +612,7 @@ if ($sitepos==3) {
 $counter_a=1;
 echo '<form name="test" method="POST" action="kz.php">';
 	$sql ='SELECT * FROM pitanja ORDER BY RAND() LIMIT 5';
-	$result = mysqli_query($mysqli,$sql)or die(mysqli_error($mysqli).' - '.$sql);
+	$result = mysqli_query($mysqli,$sql)or die;
 	while($row = $result->fetch_assoc()){
 		$ID=$row['ID'];
 		$pitanje=$row['pitanje'];

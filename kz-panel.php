@@ -24,26 +24,26 @@ $pos1=($y*$d-($d^$m)+$d)%1337;
 $pos2=(($y*$d-($d^$m)+$d)*$m)%1337;
 $pas=substr($seed,$pos1,4).substr($seed,$pos2,4);
 
-if(isset($_POST['sifra'])) $sfr=$_POST['sifra'];
+if(isset($_POST['sifra'])) $sfr=mysqli_real_escape_string($mysqli,$_POST['sifra']);
 else $sfr="";
 if(isset($_POST['flag'])) {
-	$flag=$_POST['flag'];
-	$ime=$_POST['ime'];
-	$tel=$_POST['tel'];
-	$email=$_POST['email'];
-	$adr=$_POST['adr'];
-	$IP=$_POST['IP'];
+	$flag=mysqli_real_escape_string($mysqli,$_POST['flag']);
+	$ime=mysqli_real_escape_string($mysqli,$_POST['ime']);
+	$tel=mysqli_real_escape_string($mysqli,$_POST['tel']);
+	$email=mysqli_real_escape_string($mysqli,$_POST['email']);
+	$adr=mysqli_real_escape_string($mysqli,$_POST['adr']);
+	$IP=mysqli_real_escape_string($mysqli,$_POST['IP']);
 	$flag_sql='INSERT INTO `flags` (`ime`,`tel`,`email`,`adr`,`IP`,`flag`,`info`) VALUES ("'.$ime.'","'.$tel.'","'.$email.'","'.$adr.'","'.$IP.'","'.$flag.'","0")';
-	mysqli_query($mysqli,$sql)or die(mysqli_error().' - '.$sql);;
+	mysqli_query($mysqli,$sql)or die;;
 	}
 else $flag=0;
-if(isset($_POST['sort'])) $sort=$_POST['sort'];
+if(isset($_POST['sort'])) $sort=mysqli_real_escape_string($mysqli,$_POST['sort']);
 else $sort=1;
-if(isset($_POST['arhiva'])) $arhiva=$_POST['arhiva'];
+if(isset($_POST['arhiva'])) $arhiva=mysqli_real_escape_string($mysqli,$_POST['arhiva']);
 else $arhiva=0;
-if(isset($_POST['stps'])) $sitepos=$_POST['stps'];
+if(isset($_POST['stps'])) $sitepos=mysqli_real_escape_string($mysqli,$_POST['stps']);
 else $sitepos=0;
-if(isset($_POST['page'])) $page=$_POST['page'];
+if(isset($_POST['page'])) $page=mysqli_real_escape_string($mysqli,$_POST['page']);
 else $page=1;
 if ($sfr==$parola) {
 	$sitepos=1;
@@ -129,7 +129,7 @@ if ($sitepos==1) {
 		elseif ($sort==2) $sql.='`ime` ASC, `timestamp` DESC';
 		elseif ($sort==3) $sql.='`IP` ASC, `timestamp` DESC';
 		if ($arhiva==0) $sql.=' LIMIT 100';
-		$result = mysqli_query($mysqli,$sql)or die(mysqli_error($mysqli).' - '.$sql);
+		$result = mysqli_query($mysqli,$sql)or die;
 		$count=1;
 		while($row = $result->fetch_assoc()){
 			$ID=$row['ID'];
@@ -236,7 +236,7 @@ $fdate = date ('d.m.Y. H:i:s', mktime ($hour,$min,$sec,$month,$day,$year));
 		elseif ($sort==3) $sql.='`IP` ASC, `timestamp` DESC';
 		elseif ($sort==4) $sql.='`flag` ASC, `timestamp` DESC';
 		if ($arhiva==0) $sql.=' LIMIT 100';
-		$result = mysqli_query($mysqli,$sql)or die(mysqli_error().' - '.$sql);
+		$result = mysqli_query($mysqli,$sql)or die;
 		$count=1;
 		while($row = $result->fetch_assoc()){
 			$ID=$row['ID'];
